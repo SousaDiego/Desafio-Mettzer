@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * @var list<string>
+     * Os atributos que podem ser atribuídos em massa.
+     *
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
@@ -20,7 +23,9 @@ class User extends Authenticatable
     ];
 
     /**
-     * @var list<string>
+     * Os atributos que devem ser ocultos na serialização.
+     *
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -28,15 +33,18 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return array<string, string>
+     * Os atributos que devem ser convertidos para tipos nativos.
+     *
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    /**
+     * Relacionamento: Um usuário pode ter vários artigos salvos.
+     */
     public function savedArticles()
     {
         return $this->hasMany(SavedArticle::class);

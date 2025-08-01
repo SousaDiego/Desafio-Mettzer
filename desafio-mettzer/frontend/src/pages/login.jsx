@@ -22,9 +22,16 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white p-8 shadow rounded">
-        <h2 className="text-3xl font-bold mb-6 text-center">Login</h2>
+    <div
+      className="min-h-screen flex items-center justify-center bg-opacity-25 bg-cover bg-center"
+      style={{
+        backgroundImage: `url("src/assets/news-background.png")`, // ajuste o caminho para onde você salvou a imagem
+      }}
+    >
+      <div className="bg-white bg-opacity-25 p-8 rounded shadow-lg w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-6 text-center text-violet-900">
+          Login
+        </h2>
         <form onSubmit={handleSubmit}>
           <input
             type="email"
@@ -42,14 +49,14 @@ export default function Login() {
           />
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700"
+            className="w-full bg-violet-900 hover:bg-violet-800 text-white py-3 rounded"
           >
             Entrar
           </button>
         </form>
         <p className="mt-4 text-center text-sm">
-          Não tem conta?{' '}
-          <Link to="/register" className="text-blue-600 hover:underline">
+          Não tem conta?{" "}
+          <Link to="/register" className="text-violet-900 hover:underline">
             Registre-se
           </Link>
         </p>

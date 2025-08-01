@@ -8,22 +8,19 @@ use Illuminate\Support\Facades\Http;
 
 class NewsController extends Controller
 {
-    public function buscarNoticias()
-    {
-        $resposta = Http::get('https://newsapi.org/v2/everything', [
-            'q' => 'technology',
-            'apiKey' => config('services.newsapi.key'),
-        ]);
+   public function buscarNoticias(Request $request)
+{
+    $termo = $request->query('q', 'technology'); // Pega ?q=
 
-        if ($resposta->successful()) {
-            $dados = $resposta->json();
-            $artigos = $dados['articles'] ?? [];
+    $resposta = Http::get('https://newsapi.org/v2/everything', [
+        'q' => $termo,
+        'apiKey' => config('services.newsapi.key'),
+    ]);
 
-            return response()->json($artigos);
-        }
-
-        return response()->json([
-            'error' => 'Não foi possível obter as notícias.'
-        ], $resposta->status());
+    if ($resposta->successful()) {
+        return response()->json($resposta->json()['articles'] ?? []);
     }
+
+    return response()->json(['error' => 'Erro ao buscar notícias'], $resposta->status());
+}
 }
