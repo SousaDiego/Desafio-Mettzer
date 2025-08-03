@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -16,9 +18,11 @@ export default function Register() {
         email,
         password,
       });
+      toast.success("Cadastro realizado com sucesso! Faça login para continuar.");
       navigate("/");
     } catch (error) {
       console.error("Erro ao registrar:", error);
+      toast.error("Erro ao registrar. Tente novamente.");
     }
   };
 
@@ -29,8 +33,10 @@ export default function Register() {
         backgroundImage: `url("src/assets/news-background.png")`,
       }}
     >
-      <div className="w-full max-w-md bg-white/30 backdrop-blur-md p-8 rounded-lg shadow-xl">
-        <h2 className="text-3xl font-bold mb-6 text-center text-white drop-shadow">
+      <ToastContainer />
+      
+      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-2xl">
+        <h2 className="text-3xl font-bold mb-6 text-center text-violet-900">
           Registro
         </h2>
         <form onSubmit={handleSubmit}>
@@ -39,32 +45,32 @@ export default function Register() {
             placeholder="Nome"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-3 border border-white/50 rounded mb-4 bg-transparent text-white placeholder-white"
+            className="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:border-violet-900 focus:ring-1 focus:ring-violet-900 transition duration-200"
           />
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 border border-white/50 rounded mb-4 bg-transparent text-white placeholder-white"
+            className="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:border-violet-900 focus:ring-1 focus:ring-violet-900 transition duration-200"
           />
           <input
             type="password"
             placeholder="Senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 border border-white/50 rounded mb-6 bg-transparent text-white placeholder-white"
+            className="w-full p-3 border border-gray-300 rounded-md mb-6 focus:outline-none focus:border-violet-900 focus:ring-1 focus:ring-violet-900 transition duration-200"
           />
           <button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded"
+            className="w-full bg-yellow-500 hover:bg-yellow-600 text-violet-900 font-bold py-3 rounded-md transition-colors duration-200"
           >
             Registrar
           </button>
         </form>
-        <p className="mt-4 text-center text-sm text-white">
+        <p className="mt-4 text-center text-sm text-gray-700">
           Já tem conta?{" "}
-          <Link to="/" className="text-yellow-300 hover:underline">
+          <Link to="/" className="text-yellow-600 hover:underline font-bold transition-colors duration-200">
             Faça login
           </Link>
         </p>

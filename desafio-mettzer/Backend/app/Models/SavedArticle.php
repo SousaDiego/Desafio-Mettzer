@@ -14,7 +14,7 @@ class SavedArticle extends Model
         'url',
         'source',
         'description',
-        'user_id' // se tiver FK para o usuário
+        'user_id'
     ];
 
     public function user()

@@ -10,7 +10,7 @@ class NewsController extends Controller
 {
    public function buscarNoticias(Request $request)
 {
-    $termo = $request->query('q', 'technology'); // Pega ?q=
+    $termo = $request->query('q', 'technology');
 
     $resposta = Http::get('https://newsapi.org/v2/everything', [
         'q' => $termo,

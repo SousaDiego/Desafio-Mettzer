@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import LogoutButton from "./components/logoutButton";
 import SearchButton from "./components/searchButton";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Bookmark } from 'lucide-react'; 
 export default function News() {
   const [news, setNews] = useState([]);
   const [token, setToken] = useState("");
@@ -13,6 +15,7 @@ export default function News() {
       setToken(savedToken);
     } else {
       console.warn("Nenhum token encontrado. Faça login primeiro.");
+      toast.warning("Você não está logado. Faça login para salvar artigos!");
     }
     fetchNews();
   }, []);
@@ -27,12 +30,14 @@ export default function News() {
       })
       .catch((error) => {
         console.error("Erro ao buscar notícias:", error);
+        toast.error("Erro ao buscar notícias!");
       });
   };
 
   const handleSave = async (article) => {
     if (!token) {
-      console.error("Token não encontrado. Faça login.");
+      console.error("Token não encontrado. Faça login!");
+      toast.error("Token não encontrado. Faça login!");
       return;
     }
 
@@ -53,43 +58,38 @@ export default function News() {
       );
 
       console.log("Artigo salvo com sucesso!");
-      alert("Artigo salvo com sucesso!");
+      toast.success("Artigo salvo com sucesso!");
     } catch (error) {
       console.error("Erro ao salvar artigo:", error.response?.data || error);
-      alert("Erro ao salvar artigo. Tente novamente.");
+      toast.error("Erro ao salvar artigo. Tente novamente.");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="grid grid-cols-5 items-center mb-8 mt-8 p-5 bg-violet-900 text-white">
-        {/* Esquerda vazia (coluna 1) para alinhar centro */}
-        <div>
-          <SearchButton onSearch={fetchNews} /></div>
+    <div className="min-h-screen bg-gray-100 font-sans">
+      <ToastContainer position="top-right" autoClose={3000} />
 
-        {/* Título central (colunas 2-4) */}
-        <div className="col-span-3 text-center">
-          <h1 className="text-2xl font-bold text-white">Notícias</h1>
+      <header className="fixed top-0 left-0 w-full flex items-center p-5 bg-violet-900 text-white z-50">
+        <div className="flex-1">
+          <SearchButton onSearch={fetchNews} />
         </div>
-
-        {/* Controles à direita (coluna 5) */}
-        <div className="flex gap-4 justify-end">
+        <h1 className="text-2xl font-bold">Notícias</h1>
+        <div className="flex-1 flex justify-end gap-4">
           <a
             href="/savedArticles"
-            className="bg-violet-700 hover:bg-violet-800 px-3 py-2 rounded text-sm"
+            className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded transition-colors duration-200"
           >
             Artigos Salvos
           </a>
           <LogoutButton />
         </div>
-      </div>
+      </header>
 
-
-      <div className="m-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="pt-24 p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {news.map((item, index) => (
           <div
             key={index}
-            className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-200 flex flex-col"
+            className="bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300 flex flex-col"
           >
             {item.urlToImage && (
               <img
@@ -103,15 +103,14 @@ export default function News() {
               <h2 className="text-lg font-bold text-violet-900 mb-2">
                 {item.title}
               </h2>
-              <span className="italic text-xs text-gray-500 mb-2">
-                {item.author}
-              </span>
+              <span className="italic text-xs text-gray-500 mb-2">{item.author}</span>
               <p className="text-sm text-gray-700 flex-1">{item.description}</p>
 
               <button
                 onClick={() => handleSave(item)}
-                className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-violet-900 font-bold px-4 py-2 rounded transition duration-200"
+                className="mt-4 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-violet-900 font-bold px-4 py-2 rounded transition-colors duration-200"
               >
+                <Bookmark size={16} /> 
                 Salvar Artigo
               </button>
             </div>
